@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "2fd030db5f6e4675bfa11d45548d3588"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
+  
   <title>Lab 9</title>
 
   <style>
@@ -88,21 +96,102 @@
   </main>
 
   <script>
-    let form = document.querySelector('form');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
-    });
+  class CalculatorInputError extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "CalculatorInputError";
+    }
+  }
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+  let form = document.querySelector('form');
+  let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
-  </script>
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let output = document.querySelector('output');
+    let firstNum = document.querySelector('#first-num').value;
+    let secondNum = document.querySelector('#second-num').value;
+    let operator = document.querySelector('#operator').value;
+    output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+  });
+
+  window.onerror = function (message, source, lineno, colno, error) {
+    console.log("Global error caught:", message);
+  };
+
+  errorBtns[0].addEventListener("click", () => {
+    console.log("Console log demo: button clicked");
+  });
+
+  errorBtns[1].addEventListener("click", () => {
+    try {
+      throw new CalculatorInputError("This is a custom error demo.");
+    } catch (error) {
+      console.error(`${error.name}: ${error.message}`);
+    } finally {
+      console.log("Try/catch/finally demo finished.");
+    }
+  });
+
+  errorBtns[2].addEventListener("click", () => {
+    console.count("Console count demo");
+  });
+
+  errorBtns[3].addEventListener("click", () => {
+    console.warn("Console warn demo: warning message");
+  });
+
+  errorBtns[4].addEventListener("click", () => {
+    console.assert(2 + 2 === 5, "Console assert demo: 2 + 2 does not equal 5");
+  });
+
+  errorBtns[5].addEventListener("click", () => {
+    console.clear();
+  });
+
+  errorBtns[6].addEventListener("click", () => {
+    console.dir(document.querySelector("form"));
+  });
+
+  errorBtns[7].addEventListener("click", () => {
+    console.dirxml(document.querySelector("form"));
+  });
+
+  errorBtns[8].addEventListener("click", () => {
+    console.group("Calculator Info");
+    console.log("First input:", document.querySelector("#first-num").value);
+    console.log("Operator:", document.querySelector("#operator").value);
+    console.log("Second input:", document.querySelector("#second-num").value);
+  });
+
+  errorBtns[9].addEventListener("click", () => {
+    console.groupEnd();
+  });
+
+  errorBtns[10].addEventListener("click", () => {
+    console.table([
+      { button: "Console Log", purpose: "Prints a normal message" },
+      { button: "Console Error", purpose: "Shows custom error with try/catch" },
+      { button: "Console Table", purpose: "Displays data in table form" }
+    ]);
+  });
+
+  errorBtns[11].addEventListener("click", () => {
+    console.time("Timer Demo");
+  });
+
+  errorBtns[12].addEventListener("click", () => {
+    console.timeEnd("Timer Demo");
+  });
+
+  errorBtns[13].addEventListener("click", () => {
+    console.trace("Console trace demo");
+  });
+
+  errorBtns[14].addEventListener("click", () => {
+    globalErrorDemo();
+  });
+</script>
 </body>
 
 </html>
